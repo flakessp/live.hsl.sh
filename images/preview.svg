@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#000" />
+  <text x="600" y="150" font-family="sans-serif" font-size="120" text-anchor="middle" fill="white">ВАЙБКОДИНГ</text>
+  <text x="600" y="250" font-family="sans-serif" font-size="60" text-anchor="middle" fill="#888">трансляции в телеграме</text>
+  
+  <!-- Глобус эмодзи - используем большой текст -->
+  <text x="600" y="400" font-family="sans-serif" font-size="200" text-anchor="middle" fill="white">🌍</text>
+  
+  <text x="600" y="550" font-family="monospace" font-size="40" text-anchor="middle" fill="#888">следующая трансляция: 21 апреля, 20:00 (MSK)</text>
+</svg> 
