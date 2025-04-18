@@ -1,0 +1,19 @@
+# Системные файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Редакторы и IDE
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+*~
+
+# Временные файлы
+*.log
+*.tmp
+tmp/
+
+# Файлы проекта для отладки
+plan.md 
