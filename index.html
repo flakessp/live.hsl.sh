@@ -3,7 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>хсл сш #//title>
+  <title> хсл сш</title>
+  <link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  <script>
+    // Анимированная фавиконка
+    (function() {
+      const globes = ['🌍', '🌎', '🌏'];
+      let current = 0;
+      
+      function rotateFavicon() {
+        current = (current + 1) % globes.length;
+        const favicon = document.getElementById('favicon');
+        favicon.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${globes[current]}</text></svg>`;
+      }
+      
+      setInterval(rotateFavicon, 800);
+    })();
+  </script>
   <!-- Meta populated as requested -->
   <meta name="keywords" content="#/ хсл сш вайбкодинг, следующая трансляция 21 апреля, понедельник, 20:00 (MSK), cursor, claude 3.7 sonnet">
   <style>
@@ -24,6 +40,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
+      margin-bottom: 10px;
       text-align: center;
       user-select: text;
       pointer-events: auto;
@@ -42,7 +59,7 @@
       text-overflow: ellipsis;
     }
     #subtitle {
-      top: 80px;
+      top: 90px;
       font-family: sans-serif;
       font-size: 1rem;
       color: #888;
@@ -79,12 +96,13 @@
 <body>
   <div id="canvas-container">
     <div id="title" class="overlay">ВАЙБКОДИНГ</div>
-    <div id="subtitle" class="overlay">(стрим в тг)</div>
+    <div id="subtitle" class="overlay">трансляции в <a href="https://t.me/internet_tet_a_tet" style="color: #888; text-decoration: underline;">телеграме</span></a></div>
     <div id="footer" class="overlay">
       cursor<br>
       claude 3.7 sonnet<br><br>
-      следующая трансляция:<br>
-      21 апреля, 19:00 (MSK)
+      <span class="next-label">следующая трансляция:<br></span>
+      21 апреля, 20:00 (MSK)<br>
+      ✌️
     </div>
     <!-- Past stream history table -->
     <div id="history" class="overlay">
@@ -120,11 +138,43 @@
     controls.dampingFactor = 0.1;
     controls.rotateSpeed = 0.5;
 
+    // Проверим загрузку Three.js
+    if (typeof THREE === 'undefined') {
+      console.error('Three.js не загружен');
+    } else {
+      console.log('Three.js загружен успешно');
+    }
+
     // Textures
     const loader = new THREE.TextureLoader();
-    const earthTex = loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/planets/earth_atmos_2048.jpg');
-    const cloudTex = loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/planets/earth_clouds_1024.png');
-
+    
+    // Добавим обработку ошибок при загрузке текстур
+    const earthTex = loader.load(
+      './textures/earth.jpg',
+      function(texture) {
+        console.log('Текстура земли загружена успешно');
+      },
+      function(xhr) {
+        console.log('Загрузка текстуры земли: ' + (xhr.loaded / xhr.total * 100) + '%');
+      },
+      function(error) {
+        console.error('Ошибка при загрузке текстуры земли', error);
+      }
+    );
+    
+    const cloudTex = loader.load(
+      './textures/clouds.png',
+      function(texture) {
+        console.log('Текстура облаков загружена успешно');
+      },
+      function(xhr) {
+        console.log('Загрузка текстуры облаков: ' + (xhr.loaded / xhr.total * 100) + '%');
+      },
+      function(error) {
+        console.error('Ошибка при загрузке текстуры облаков', error);
+      }
+    );
+    
     // Earth
     const earth = new THREE.Mesh(
       new THREE.SphereGeometry(0.4375, 64, 64),
