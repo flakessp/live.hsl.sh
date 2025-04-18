@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>хсл сш #//title>
+  <!-- Meta populated as requested -->
+  <meta name="keywords" content="#/ хсл сш вайбкодинг, следующая трансляция 21 апреля, понедельник, 20:00 (MSK), cursor, claude 3.7 sonnet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background: #000;
+    }
+    #canvas-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    canvas { display: block; }
+    .overlay {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      user-select: text;
+      pointer-events: auto;
+      color: white;
+    }
+    #title {
+      top: 20px;
+      width: 100%;
+      max-width: 1000px;
+      font-family: sans-serif;
+      font-size: clamp(2rem, 10vw, 4rem);
+      font-weight: bold;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #subtitle {
+      top: 80px;
+      font-family: sans-serif;
+      font-size: 1rem;
+      color: #888;
+      line-height: 1;
+    }
+    #footer {
+      bottom: 80px;
+      font-family: monospace;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    /* Style for next-stream label */
+    .next-label {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    /* Past streams title */
+    #history-title {
+      bottom: 35px;
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: #444;
+      line-height: 1;
+    }
+    #history {
+      bottom: 20px;
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: #444;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <div id="title" class="overlay">ВАЙБКОДИНГ</div>
+    <div id="subtitle" class="overlay">(стрим в тг)</div>
+    <div id="footer" class="overlay">
+      cursor<br>
+      claude 3.7 sonnet<br><br>
+      следующая трансляция:<br>
+      21 апреля, 19:00 (MSK)
+    </div>
+    <!-- Past stream history table -->
+    <div id="history" class="overlay">
+      <table style="border-collapse: collapse;">
+        <tr>
+          <td>17 апреля, 20:00 (MSK)</td>
+          <td style="padding-left: 8px;">windsurf</td>
+          <td style="padding-left: 8px;">gpt 4.1 / o3</td>
+          <td style="padding-left: 8px;">codex</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 3;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // OrbitControls
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.rotateSpeed = 0.5;
+
+    // Textures
+    const loader = new THREE.TextureLoader();
+    const earthTex = loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/planets/earth_atmos_2048.jpg');
+    const cloudTex = loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/planets/earth_clouds_1024.png');
+
+    // Earth
+    const earth = new THREE.Mesh(
+      new THREE.SphereGeometry(0.4375, 64, 64),
+      new THREE.MeshPhongMaterial({ map: earthTex })
+    );
+    scene.add(earth);
+
+    // Clouds
+    const clouds = new THREE.Mesh(
+      new THREE.SphereGeometry(0.45, 64, 64),
+      new THREE.MeshPhongMaterial({ map: cloudTex, transparent: true, opacity: 0.5 })
+    );
+    scene.add(clouds);
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 1.0));
+    const softDir = new THREE.DirectionalLight(0xffffff, 0.3);
+    softDir.position.set(5, 3, 5);
+    scene.add(softDir);
+
+    // Animation
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+      earth.rotation.y += delta * (2 * Math.PI / 40);
+      clouds.rotation.y += delta * (2 * Math.PI / 45);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth/window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
